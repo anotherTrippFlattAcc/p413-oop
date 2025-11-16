@@ -6,6 +6,7 @@
 #include "Tasks/Flat.h"
 #include "Tasks/String.h"
 #include "Tasks/Array.h"
+#include "Tasks/Date.h"
 
 void fractionTest() {
     Fraction f1(1, 2);
@@ -102,6 +103,27 @@ void arrayTest() {
     a1.print();
 }
 
+void dateTest() {
+    Date d1(16, 11, 2025);
+    Date d2(16, 11, 2023);
+
+    std::cout << "d1 - d2: " << d1 - d2 << std::endl;
+
+    d1 += 20;
+    std::cout << "d1 after += 20: " << d1 << std::endl;
+
+    ++d1;
+    std::cout << "After ++d1: " << d1 << std::endl;
+
+    --d1;
+    std::cout << "After --d1: " << d1 << std::endl;
+
+    if (d1 != d2) std::cout << "d1 != d2" << std::endl;
+
+    d1(1, 1, 2026);
+    std::cout << "d1 after () operator: " << d1 << std::endl;
+}
+
 int main() {
     fractionTest();
     complexTest();
@@ -109,4 +131,5 @@ int main() {
     flatTest();
     stringTest();
     arrayTest();
+    dateTest();
 }

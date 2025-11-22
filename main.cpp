@@ -1,356 +1,136 @@
 #include <iostream>
-#include <numeric>
+#include <string>
+#include <vector>
 
-class BaseException : public std::exception {
-protected:
-    std::string message;
+class Book {
+    std::string author;
+    std::string title;
+    std::string publisher;
+    int year;
+    int pages;
+
 public:
-    explicit BaseException(const std::string& msg) : message(msg) {}
+    explicit Book (const std::string& a, const std::string& t, const std::string& pub, const int y, const int p):
+    author(a), title(t), publisher(pub), year(y), pages(p) {}
 
-    const char* what() const noexcept override {
-        return message.c_str();
+    void print() const {
+        std::cout << "---\n" << "Book \"" << title << "\" by " << author <<
+            "\nPublisher: " << publisher << "\nYear: " << year << "\nPages: " << pages << "\n---" << std::endl;
+    }
+
+    std::string getAuthor() const {
+        return author;
+    }
+
+    std::string getPublisher() const {
+        return publisher;
+    }
+
+    int getYear() const {
+        return year;
     }
 };
 
-class MathException : public BaseException {
+class Worker {
+    std::string FIO;
+    std::string position;
+    int year;
+    int salary;
+
 public:
-    explicit MathException(const std::string& msg) : BaseException(msg) {}
-};
+    explicit Worker (const std::string& fio, const std::string& p, const int y, const int s):
+        FIO(fio), position(p), year(y), salary(s) {}
 
-class DivisionByZeroException : public MathException {
-public:
-    DivisionByZeroException() : MathException("[ERROR] Dividing by zero!") {}
-};
-
-class NegativeSqrtException : public MathException {
-public:
-    NegativeSqrtException() : MathException("[ERROR] Root of a negative number!") {}
-};
-
-class OverflowException : public MathException {
-public:
-    OverflowException() : MathException("[ERROR] Overflow!") {}
-};
-
-class MemoryException : public BaseException {
-public:
-    explicit MemoryException(const std::string& msg) : BaseException(msg) {}
-};
-
-class OutOfMemoryCustomException : public MemoryException {
-public:
-    OutOfMemoryCustomException() : MemoryException("[ERROR] Out of memory!") {}
-};
-
-class MemoryAllocationException : public MemoryException {
-public:
-    MemoryAllocationException() : MemoryException("[ERROR] Failed to allocate memory!") {}
-};
-
-class FileException : public BaseException {
-public:
-    explicit FileException(const std::string& msg) : BaseException(msg) {}
-};
-
-class FileNotFoundException : public FileException {
-public:
-    FileNotFoundException() : FileException("[ERROR] File not found!") {}
-};
-
-class FileReadException : public FileException {
-public:
-    FileReadException() : FileException("[ERROR] Cannot read file!") {}
-};
-
-class FileWriteException : public FileException {
-public:
-    FileWriteException() : FileException("[ERROR] Cannot write file!") {}
-};
-
-class DataStructureException : public BaseException {
-public:
-    explicit DataStructureException(const std::string& msg) : BaseException(msg) {}
-};
-
-class EmptyContainerException : public DataStructureException {
-public:
-    EmptyContainerException() : DataStructureException("[ERROR] Data structure is empty!") {}
-};
-
-class IndexOutOfRangeException : public DataStructureException {
-public:
-    IndexOutOfRangeException() : DataStructureException("[ERROR] Index out of range!") {}
-};
-
-class InvalidOperationException : public DataStructureException {
-public:
-    InvalidOperationException() : DataStructureException("[ERROR] Invalid operation with data structure!") {}
-};
-
-namespace Math {
-    namespace Fractions {
-        class Fraction {
-        private:
-            int numerator;
-            int denominator;
-
-            void reduce() {
-                int g = std::gcd(numerator, denominator);
-                numerator /= g;
-                denominator /= g;
-
-                if (denominator < 0) {
-                    numerator = -numerator;
-                    denominator = -denominator;
-                }
-            }
-        public:
-            explicit Fraction(int numerator = 1, int denominator = 1) {
-                this->numerator = numerator;
-                this->denominator = denominator;
-                reduce();
-            }
-
-            int getNumerator() const {
-                return numerator;
-            }
-
-            int getDenominator() const {
-                return denominator;
-            }
-
-            void setNumerator(int value) {
-                this->numerator = value;
-            }
-
-            void setDenominator(int value) {
-                this->denominator = value;
-            }
-
-            void input() {
-                std::cout << "Enter numerator: ";
-                std::cin >> numerator;
-                std::cout << "Enter denominator: ";
-                std::cin >> denominator;
-                if (denominator == 0) {
-                    std::cerr << "Error! Division by zero!";
-                }
-                reduce();
-            }
-
-            Fraction add(Fraction f) {
-                int n = this->numerator * f.denominator + this->denominator * f.numerator;
-                int d = this->denominator * f.denominator;
-                return Fraction(n, d);
-            }
-
-            Fraction subtract(Fraction f) {
-                int n = this->numerator * f.denominator - this->denominator * f.numerator;
-                int d = this->denominator * f.denominator;
-                return Fraction(n, d);
-            }
-
-            Fraction multiply(Fraction f) {
-                int n = this->numerator * f.numerator;
-                int d = this->denominator * f.denominator;
-                return Fraction(n, d);
-            }
-
-            Fraction divide(Fraction f) {
-                if (f.numerator == 0) {
-                    std::cerr << "Error! Division by zero!";
-                }
-
-                int n = this->numerator * f.denominator;
-                int d = this->denominator * f.numerator;
-                return Fraction(n, d);
-            }
-
-            void print() const {
-                std::cout << numerator << "/" << denominator;
-            }
-        };
+    void print() const {
+        std::cout << "---\n" << "Worker " << FIO << "\nPosition: " << position <<
+            "\nEmployment year: " << year << "\nSalary: " << salary << "\n---" << std::endl;
     }
-    namespace Geometry {
-        namespace Geometry2D {
-            class Point2D {
-            private:
-                double x, y;
 
-            public:
-                explicit Point2D(const double x = 0, const double y = 0) : x(x), y(y) {}
+    int getYear() const {
+        return year;
+    }
 
-                double getX() const { return x; }
+    int getSalary() const {
+        return salary;
+    }
 
-                double getY() const { return y; }
-            };
-        }
-        namespace Geometry3D {
-            class Point3D {
-            private:
-                double x, y, z;
+    std::string getPosition() const {
+        return position;
+    }
+};
 
-            public:
-                explicit Point3D(const double x = 0, const double y = 0, const double z = 0): x(x), y(y), z(z) {}
-
-                double getX() const { return x; }
-
-                double getY() const { return y; }
-
-                double getZ() const { return z; }
-            };
+void printBooksByAuthor(const std::vector<Book>& books, const std::string& author) {
+    std::cout << author << "\'s books:" << std::endl;
+    for (Book book: books) {
+        if (book.getAuthor() == author) {
+            book.print();
         }
     }
 }
 
-class Node {
-public:
-    int data;
-    Node* prev;
-    Node* next;
-
-    Node(int value) : data(value), prev(nullptr), next(nullptr) {}
-};
-
-class DoublyLinkedList {
-private:
-    Node* head;
-    Node* tail;
-    int size;
-
-public:
-    DoublyLinkedList() : head(nullptr), tail(nullptr), size(0) {}
-
-    ~DoublyLinkedList() {
-        while (head) pop_front();
-    }
-
-    int getSize() const { return size; }
-
-    void push_front(int value) {
-        Node* newNode = nullptr;
-
-        try {
-            newNode = new Node(value);
-        } catch (std::bad_alloc&) {
-            throw MemoryAllocationException();
+void printBooksByPublisher(const std::vector<Book>& books, const std::string& publisher) {
+    std::cout << "Books published by " << publisher <<  ":" << std::endl;
+    for (Book book: books) {
+        if (book.getPublisher() == publisher) {
+            book.print();
         }
-
-        newNode->next = head;
-
-        if (head) head->prev = newNode;
-        else tail = newNode;
-
-        head = newNode;
-        size++;
     }
+}
 
-    void push_back(int value) {
-        Node* newNode = nullptr;
-
-        try {
-            newNode = new Node(value);
-        } catch (std::bad_alloc&) {
-            throw MemoryAllocationException();
+void printBooksByYear(const std::vector<Book>& books, const int year) {
+    std::cout << "Books made after " << year << ":" << std::endl;
+    for (Book book: books) {
+        if (book.getYear() > year) {
+            book.print();
         }
-
-        newNode->prev = tail;
-
-        if (tail) tail->next = newNode;
-        else head = newNode;
-
-        tail = newNode;
-        size++;
     }
+}
 
-    void pop_front() {
-        if (!head) throw EmptyContainerException();
-
-        Node* temp = head;
-        head = head->next;
-
-        if (head) head->prev = nullptr;
-        else tail = nullptr;
-
-        delete temp;
-        size--;
-    }
-
-    void pop_back() {
-        if (!tail) throw EmptyContainerException();
-
-        Node* temp = tail;
-        tail = tail->prev;
-
-        if (tail) tail->next = nullptr;
-        else head = nullptr;
-
-        delete temp;
-        size--;
-    }
-
-    int at(int index) const {
-        if (index >= size) throw IndexOutOfRangeException();
-
-        Node* current = head;
-
-        for (int i = 0; i < index; i++)
-            current = current->next;
-
-        return current->data;
-    }
-
-    void print() const {
-        Node* cur = head;
-        while (cur) {
-            std::cout << cur->data << " ";
-            cur = cur->next;
+void printWorkersByExperience(const std::vector<Worker>& workers, const int experience) {
+    std::cout << "Workers with experience more than " << experience << " years:" << std::endl;
+    for (Worker worker: workers) {
+        if (2025 - worker.getYear() > experience) {
+            worker.print();
         }
-        std::cout << std::endl;
     }
-};
+}
+
+void printWorkersBySalary(const std::vector<Worker>& workers, const int salary) {
+    std::cout << "Workers with salary more than $" << salary << ":" << std::endl;
+    for (Worker worker: workers) {
+        if (worker.getSalary() > salary) {
+            worker.print();
+        }
+    }
+}
+
+void printWorkersByPosition(const std::vector<Worker>& workers, const std::string& position) {
+    std::cout << "Workers at " << position << " position:" << std::endl;
+    for (Worker worker: workers) {
+        if (worker.getPosition() == position) {
+            worker.print();
+        }
+    }
+}
 
 int main() {
-    try {
-        DoublyLinkedList list;
+    std::vector<Book> books {
+        Book("George Orwell", "1984", "Secker and Warburg", 1948, 500),
+        Book("Mary Shelley", "Frankenstein", "Lackington, Hughes, Harding, Mavor & Jones", 1818, 400),
+        Book("Ray Douglas Bradbury", "Fahrenheit 451", "Ballantine Books", 1953, 450)
+    };
 
-        list.push_back(10);
-        list.push_back(20);
-        list.push_front(5);
+    std::vector<Worker> workers {
+        Worker("Bob White", "Senior Programmer", 2018, 1200),
+        Worker("John Smith", "Middle Programmer", 2022, 800),
+        Worker("Tom Gray", "Junior Programmer", 2024, 600)
+    };
 
-        list.print();
+    printBooksByAuthor(books ,"George Orwell");
+    printBooksByPublisher(books, "Lackington, Hughes, Harding, Mavor & Jones");
+    printBooksByYear(books, 1950);
 
-        std::cout << "Element with index 1: " << list.at(1) << std::endl;
-
-        list.pop_front();
-        list.pop_back();
-        list.pop_back();
-
-        list.pop_back();
-
-    } catch (const std::exception& e) {
-        std::cout << e.what() << std::endl;
-    }
-
-    using Math::Fractions::Fraction;
-    using Math::Geometry::Geometry2D::Point2D;
-    using Math::Geometry::Geometry3D::Point3D;
-
-    std::cout << "Fraction" << std::endl;
-    Fraction a(1, 2);
-    Fraction b(2, 10);
-    a.print();
-    std::cout << " + ";
-    b.print();
-    std::cout << " = ";
-    a.add(b).print();
-    std::cout << std::endl;
-
-    std::cout << "Point2D" << std::endl;
-    Point2D p2d(1, 2);
-    std::cout << p2d.getX() << ", " << p2d.getY() << std::endl;
-
-    std::cout << "Point3D" << std::endl;
-    Point3D p3d(1, 2, 3);
-    std::cout << p3d.getX() << ", " << p3d.getY() << ", " << p3d.getZ() << std::endl;
+    printWorkersByExperience(workers, 6);
+    printWorkersBySalary(workers, 700);
+    printWorkersByPosition(workers, "Junior Programmer");
 }

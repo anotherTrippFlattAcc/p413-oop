@@ -1,135 +1,137 @@
 #include <algorithm>
 #include <iostream>
-#include "Tasks/Fraction.h"
-#include "Tasks/Complex.h"
-#include "Tasks/Overcoat.h"
-#include "Tasks/Flat.h"
-#include "Tasks/String.h"
-#include "Tasks/Array.h"
-#include "Tasks/Date.h"
+#include <string>
+#include <vector>
 
-void fractionTest() {
-    Fraction f1(1, 2);
-    Fraction f2(3, 9);
-    (f1 + f2).print();
-    std::cout << std::endl;
+class Book {
+    std::string author;
+    std::string title;
+    std::string publisher;
+    int year;
+    int pages;
+
+public:
+    explicit Book (const std::string& a, const std::string& t, const std::string& pub, const int y, const int p):
+    author(a), title(t), publisher(pub), year(y), pages(p) {}
+
+    void print() const {
+        std::cout << "---\n" << "Book \"" << title << "\" by " << author <<
+            "\nPublisher: " << publisher << "\nYear: " << year << "\nPages: " << pages << "\n---" << std::endl;
+    }
+
+    std::string getAuthor() const {
+        return author;
+    }
+
+    std::string getPublisher() const {
+        return publisher;
+    }
+
+    int getYear() const {
+        return year;
+    }
+};
+
+class Worker {
+    std::string FIO;
+    std::string position;
+    int year;
+    int salary;
+
+public:
+    explicit Worker (const std::string& fio, const std::string& p, const int y, const int s):
+        FIO(fio), position(p), year(y), salary(s) {}
+
+    void print() const {
+        std::cout << "---\n" << "Worker " << FIO << "\nPosition: " << position <<
+            "\nEmployment year: " << year << "\nSalary: " << salary << "\n---" << std::endl;
+    }
+
+    int getYear() const {
+        return year;
+    }
+
+    int getSalary() const {
+        return salary;
+    }
+
+    std::string getPosition() const {
+        return position;
+    }
+};
+
+void printBooksByAuthor(const std::vector<Book>& books, const std::string& author) {
+    std::cout << author << "\'s books:" << std::endl;
+    for (Book book: books) {
+        if (book.getAuthor() == author) {
+            book.print();
+        }
+    }
 }
 
-void complexTest() {
-    Complex c1(3, 4);
-    Complex c2(1, -2);
-    (c1 + c2).print();
-    std::cout << std::endl;
+void printBooksByPublisher(const std::vector<Book>& books, const std::string& publisher) {
+    std::cout << "Books published by " << publisher <<  ":" << std::endl;
+    for (Book book: books) {
+        if (book.getPublisher() == publisher) {
+            book.print();
+        }
+    }
 }
 
-void overcoatTest() {
-    Overcoat o1(COAT, 150);
-    Overcoat o2(COAT, 200);
-    Overcoat o3(FUR, 500);
-
-    o1.print();
-    o2.print();
-    o3.print();
-
-    std::cout << "o1 == o2: " << (o1 == o2) << std::endl;
-    std::cout << "o1 == o3: " << (o1 == o3) << std::endl;
-
-    std::cout << "o1 > o2: " << (o1 > o2) << std::endl;
-
-    o1 = o3;
-    o1.print();
-
-    o1.setPrice(400);
-    std::cout << "o3 > o1: " << (o3 > o1) << std::endl;
+void printBooksByYear(const std::vector<Book>& books, const int year) {
+    std::cout << "Books made after " << year << ":" << std::endl;
+    for (Book book: books) {
+        if (book.getYear() > year) {
+            book.print();
+        }
+    }
 }
 
-void flatTest() {
-    Flat f1(45.0, 50000);
-    Flat f2(45.0, 60000);
-    Flat f3(60.0, 75000);
-
-    std::cout << "f1: ";
-    f1.print();
-    std::cout << std::endl;
-    std::cout << "f2: ";
-    f2.print();
-    std::cout << std::endl;
-    std::cout << "f3: ";
-    f3.print();
-    std::cout << std::endl;
-
-    std::cout << "f1 == f2: " << (f1 == f2) << std::endl;
-    std::cout << "f1 == f3: " << (f1 == f3) << std::endl;
-
-    std::cout << "f1 > f2: " << (f1 > f2) << std::endl;
-
-    f1 = f3;
-    f1.print();
-
-    f1.setPrice(400);
-    std::cout << "o3 > o1: " << (f3 > f1) << std::endl;
+void printWorkersByExperience(const std::vector<Worker>& workers, const int experience) {
+    std::cout << "Workers with experience more than " << experience << " years:" << std::endl;
+    for (Worker worker: workers) {
+        if (2025 - worker.getYear() > experience) {
+            worker.print();
+        }
+    }
 }
 
-void stringTest() {
-    String s1("String 1");
-    String s2("String 2");
-
-    s1.print();
-    s2.print();
-
-    s1 = std::move(s2);
-    s1.print();
-
-    std::cout << s1[0] << std::endl;
-    std::cout << s1('t') << std::endl;
-    std::cout << (int)s1 << std::endl;
+void printWorkersBySalary(const std::vector<Worker>& workers, const int salary) {
+    std::cout << "Workers with salary more than $" << salary << ":" << std::endl;
+    for (Worker worker: workers) {
+        if (worker.getSalary() > salary) {
+            worker.print();
+        }
+    }
 }
 
-void arrayTest() {
-    Array a1;
-    Array a2;
-
-    a1.insert(0, 4);
-    a1.insert(1, 2);
-    a1.insert(2, 0);
-
-    a2.insert(0, 1);
-    a2.insert(1, 2);
-
-    a1.print();
-    a2.print();
-
-    a1 = std::move(a2);
-    a1.print();
-}
-
-void dateTest() {
-    Date d1(16, 11, 2025);
-    Date d2(16, 11, 2023);
-
-    std::cout << "d1 - d2: " << d1 - d2 << std::endl;
-
-    d1 += 20;
-    std::cout << "d1 after += 20: " << d1 << std::endl;
-
-    ++d1;
-    std::cout << "After ++d1: " << d1 << std::endl;
-
-    --d1;
-    std::cout << "After --d1: " << d1 << std::endl;
-
-    if (d1 != d2) std::cout << "d1 != d2" << std::endl;
-
-    d1(1, 1, 2026);
-    std::cout << "d1 after () operator: " << d1 << std::endl;
+void printWorkersByPosition(const std::vector<Worker>& workers, const std::string& position) {
+    std::cout << "Workers at " << position << " position:" << std::endl;
+    for (Worker worker: workers) {
+        if (worker.getPosition() == position) {
+            worker.print();
+        }
+    }
 }
 
 int main() {
-    fractionTest();
-    complexTest();
-    overcoatTest();
-    flatTest();
-    stringTest();
-    arrayTest();
-    dateTest();
+    std::vector<Book> books {
+        Book("George Orwell", "1984", "Secker and Warburg", 1948, 500),
+        Book("Mary Shelley", "Frankenstein", "Lackington, Hughes, Harding, Mavor & Jones", 1818, 400),
+        Book("Ray Douglas Bradbury", "Fahrenheit 451", "Ballantine Books", 1953, 450)
+    };
+
+    std::vector<Worker> workers {
+        Worker("Bob White", "Senior Programmer", 2018, 1200),
+        Worker("John Smith", "Middle Programmer", 2022, 800),
+        Worker("Tom Gray", "Junior Programmer", 2024, 600)
+    };
+
+    printBooksByAuthor(books ,"George Orwell");
+    printBooksByPublisher(books, "Lackington, Hughes, Harding, Mavor & Jones");
+    printBooksByYear(books, 1950);
+
+    printWorkersByExperience(workers, 6);
+    printWorkersBySalary(workers, 700);
+    printWorkersByPosition(workers, "Junior Programmer");
 }
